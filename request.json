@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.jsonschema.xyz/PassGeneratorRequest.schema",
+    "Nfc": {},
+    "LogoText": "MOC Social Club",
+    "Barcode": {},
+    "appLaunchUrl": "https://mocsocial.club",
+    "webServiceUrl": "https://mocsocial.club",
+    "request": {},
+    "primaryFields": [
+        {
+            "key": "name",
+            "label": "Name",
+            "value": "John Doe",
+            "fieldType": "Text"
+        },
+        {
+            "key": "market_role",
+            "label": "Market role",
+            "fieldType": "Text"
+        }
+    ]
+}

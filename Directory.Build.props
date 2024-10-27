@@ -1,0 +1,25 @@
+<!--
+ * Directory.Build.props
+ *     Created: 2024-10-17T18:15:24-04:00
+ *    Modified: 2024-10-17T18:15:24-04:00
+ *      Author: Dr. David Gerard <david@mymoc.social>
+ *   Copyright: © 2022 - 2024 Dr. David Gerard, All Rights Reserved
+ *     License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project>
+  <PropertyGroup>
+    <NoWarn>NU1008;$(NoWarn)</NoWarn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <PackageReference ExcludeAssets="Native;ContentFiles" />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Using Include="Passbook.Generator.Fields" />
+    <Using Include="Passbook.Generator" />
+    <Using Include="Microsoft.Extensions.Options" />
+    <Using Include="System.Security.Cryptography.X509Certificates" />
+    <Using Include="Microsoft.AspNetCore.Mvc"/>
+    <Using Include="System.Threading.Tasks" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+<!--
+ * Directory.Packages.props
+ *     Created: 2024-10-17T18:21:37-04:00
+ *    Modified: 2024-10-17T18:21:37-04:00
+ *      Author: Dr. David Gerard <david@mymoc.social>
+ *   Copyright: © 2022 - 2024 Dr. David Gerard, All Rights Reserved
+ *     License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="[8.0.10,)" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="[6.9.0,)" />
+    <PackageVersion Include="dotnet-passbook" Version="[3.3.5-delta,)" />
+    <PackageVersion Include="Dgmjr.Enumerations.CodeGenerator" Version="[0.0.1-Local,)" />
+    <PackageVersion Include="Dgmjr.Enumerations.CodeGenerator.Runtime" Version="[0.0.1-Local,)" />
+    <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="[4.3.1,)" />
+    <PackageVersion Include="MinVer" Version="[6.0.0,)" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="[8.0.0,)" />
+    <PackageVersion Include="Dgmjr.System.Extensions" Version="[0.0.1-Local,)" />
+    <PackageVersion Include="Dgmjr.Mime" Version="[0.0.1-Local,)" />
+    <PackageVersion Include="System.Collections.Immutable" Version="[9.0.0-rc.2.24473.5,)" />
+  </ItemGroup>
+</Project>

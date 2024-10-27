@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Configuration Condition="'$(Configuration)' == ''">Local</Configuration>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="dotnet-passbook" />
+    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator" />
+    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator.Runtime" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" />
+    <PackageReference Include="MinVer" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" />
+    <PackageReference Include="Dgmjr.System.Extensions" />
+    <PackageReference Include="Dgmjr.Mime" /> -->
+
+
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="[8.0.10,)" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="[6.9.0,)" />
+    <PackageReference Include="dotnet-passbook" Version="[3.3.5-delta,)" />
+    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator" Version="[0.0.1-Local,)" />
+    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator.Runtime" Version="[0.0.1-Local,)" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="[4.3.1,)" />
+    <PackageReference Include="MinVer" Version="[6.0.0,)" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="[8.0.0,)" />
+    <PackageReference Include="Dgmjr.System.Extensions" Version="[0.0.1-Local,)" />
+    <PackageReference Include="Dgmjr.Mime" Version="[0.0.1-Local,)" />
+    <PackageReference Include="System.Collections.Immutable" Version="[9.0.0-rc.2.24473.5,)" />
+  </ItemGroup>
+
+</Project>
