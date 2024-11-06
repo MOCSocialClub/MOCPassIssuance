@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Dgmjr.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configuration Condition="'$(Configuration)' == ''">Local</Configuration>
+    <NoWarn>$(NoWarn);CS8981</NoWarn>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,17 +23,23 @@
     <PackageReference Include="Dgmjr.Mime" /> -->
 
 
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="[8.0.10,)" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="[6.9.0,)" />
-    <PackageReference Include="dotnet-passbook" Version="[3.3.5-delta,)" />
-    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator" Version="[0.0.1-Local,)" />
-    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator.Runtime" Version="[0.0.1-Local,)" />
-    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="[4.3.1,)" />
-    <PackageReference Include="MinVer" Version="[6.0.0,)" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="[8.0.0,)" />
-    <PackageReference Include="Dgmjr.System.Extensions" Version="[0.0.1-Local,)" />
-    <PackageReference Include="Dgmjr.Mime" Version="[0.0.1-Local,)" />
-    <PackageReference Include="System.Collections.Immutable" Version="[9.0.0-rc.2.24473.5,)" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" VersionOverride="[8.0.10,)" />
+    <PackageReference Include="Swashbuckle.AspNetCore" VersionOverride="[6.9.0,)" />
+    <PackageReference Include="dotnet-passbook" VersionOverride="[3.3.5-delta,)" />
+    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator" VersionOverride="[0.0.1-Local,)" />
+    <PackageReference Include="Dgmjr.Enumerations.CodeGenerator.Runtime" VersionOverride="[0.0.1-Local,)" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" VersionOverride="[4.3.1,)" />
+    <!-- <PackageReference Include="MinVer" VersionOverride="[6.0.0,)" /> -->
+    <!-- <PackageReference Include="Microsoft.SourceLink.GitHub" VersionOverride="[8.0.0,)" /> -->
+    <PackageReference Include="Dgmjr.System.Extensions" VersionOverride="[0.0.1-Local,)" />
+    <PackageReference Include="Dgmjr.Mime" VersionOverride="[0.0.1-Local,)" />
+    <PackageReference Include="Dgmjr.Http.Headers" VersionOverride="[0.0.1-Local,)" />
+    <PackageReference Include="System.Collections.Immutable" VersionOverride="[9.0.0-rc.2.24473.5,)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="./certs/pass.club.mocsocial.mare.p12" LogicalName="pass.club.mocsocial.mare.p12" />
+    <EmbeddedResource Include="./certs/AppleWWDRCAG8.cer" LogicalName="AppleWWDRCAG8" />
   </ItemGroup>
 
 </Project>

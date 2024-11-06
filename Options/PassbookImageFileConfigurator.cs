@@ -39,16 +39,20 @@ public class PassbookImageFileConfigurator(
             )
                 ? t
                 : PassbookImage.Icon;
-            if (!base64.IsPresent() && !path.IsPresent())
+            if (!base64!.IsPresent() && !path!.IsPresent())
             {
                 Logger.ImagePathNotProvided();
             }
-            else if (path.IsPresent())
+            else if (path!.IsPresent())
             {
-                Logger.AddingPassbookImageFile(item[nameof(IPassbookImageFile.Path)]);
+                Logger.AddingPassbookImageFile(
+                    item[nameof(IPassbookImageFile.Path)] ?? string.Empty
+                );
                 images.Add(
                     type,
-                    new PhysicalPassbookImageFile(item[nameof(IPassbookImageFile.Path)])
+                    new PhysicalPassbookImageFile(
+                        item[nameof(IPassbookImageFile.Path)] ?? string.Empty
+                    )
                 );
             }
             else
@@ -56,8 +60,20 @@ public class PassbookImageFileConfigurator(
                 images.Add(
                     type,
                     new VirtualPassbookImageFile(
-                        Path.GetFileName(item[nameof(IPassbookImageFile.Filename)]),
+                        Path.GetFileName(
+                            item[nameof(IPassbookImageFile.Filename)]
+#pragma warning disable S3928, CA2208
+                                ?? throw new ArgumentException(
+                                    "The passbook filename is required.",
+                                    $"{nameof(IPassbookImageFile)}.{nameof(IPassbookImageFile.Filename)}"
+                                )
+                        ),
                         base64
+                            ?? throw new ArgumentException(
+                                "The passbook image base64 data is required.",
+                                nameof(base64)
+                            )
+#pragma warning restore S3928, CA2208
                     )
                 );
             }

@@ -35,6 +35,39 @@ public record class MOCSocialClubPassbookOptions
     public Certificate SigningCertificate { get; set; }
 
     public Certificate CaCertificate { get; set; }
+
+    public virtual async Task<PassGeneratorRequest> ToPassGeneratorRequestAsync()
+    {
+        var request = new PassGeneratorRequest()
+        {
+            PassTypeIdentifier = PassTypeIdentifier,
+            TeamIdentifier = TeamId,
+            Description = "MOC Social Club Membership Card",
+            OrganizationName = OrganizationName,
+            LogoText = LogoText,
+            BackgroundColor = BackgroundColor,
+            LabelColor = LabelColor,
+            ForegroundColor = ForegroundColor,
+            Style = Style,
+            Images = await Task.WhenAll(
+                    Images.Select(async kvp => new
+                    {
+                        kvp.Key,
+                        Value = await kvp.Value.AsBytesAsync(),
+                    })
+                )
+                .ContinueWith(t => t.Result.ToDictionary(x => x.Key, x => x.Value)),
+        };
+
+        request.PrimaryFields.AddRange(PrimaryFields);
+        request.SecondaryFields.AddRange(SecondaryFields);
+        request.HeaderFields.AddRange(HeaderFields);
+        request.BackFields.AddRange(BackFields);
+        request.AuxiliaryFields.AddRange(AuxiliaryFields);
+        request.AppleWWDRCACertificate = CaCertificate.AsX509Certificate();
+        request.PassbookCertificate = SigningCertificate.AsX509Certificate();
+        return request;
+    }
 }
 
 public interface IPassbookImageFile
@@ -76,11 +109,15 @@ public record class VirtualPassbookImageFile(string Filename, string Base64) : I
 
 public readonly record struct Certificate
 {
-    public string Base64 { get; }
+    public string? Base64 { get; }
     public string? Password { get; }
+    public string? Filename { get; }
 
-    public byte[] AsBytes() => Base64.IsPresent() ? FromBase64String(Base64) : [];
+    public byte[] AsBytes() =>
+        Base64.IsPresent() ? FromBase64String(Base64)
+        : Filename!.IsPresent() && File.Exists(Filename) ? File.ReadAllBytes(Filename)
+        : [];
 
     public X509Certificate2 AsX509Certificate() =>
-        string.IsNullOrEmpty(Password) ? new(AsBytes()) : new(AsBytes(), Password);
+        !Password!.IsPresent() ? new(AsBytes()) : new(AsBytes(), Password);
 }

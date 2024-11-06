@@ -7,257 +7,306 @@
  *     License: MIT (https://opensource.org/licenses/MIT)
  */
 
-namespace QuickType
+namespace MOCSocialClubPassWebService.Models.Json
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net.Http;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
     public partial class MocMembershipCardRequest
     {
         [JsonProperty(nameof(FirstName))]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
         [JsonProperty(nameof(LastName))]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
         [JsonProperty(nameof(Email))]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [JsonProperty(nameof(DisplayName))]
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = string.Empty;
 
         [JsonProperty(nameof(Organization))]
-        public string Organization { get; set; }
+        public string Organization { get; set; } = string.Empty;
 
         [JsonProperty(nameof(ProfileLastUpdated))]
-        public DateTimeOffset ProfileLastUpdated { get; set; }
+        public DateTimeOffset ProfileLastUpdated { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(MembershipLevel))]
-        public MembershipLevel MembershipLevel { get; set; }
+        public MembershipLevel MembershipLevel { get; set; } = new MembershipLevel();
 
         [JsonProperty(nameof(MembershipEnabled))]
-        public bool MembershipEnabled { get; set; }
+        public bool MembershipEnabled { get; set; } = false;
 
         [JsonProperty(nameof(Status))]
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
 
-        [JsonProperty(nameof(FieldValues))]
-        public FieldValue[] FieldValues { get; set; }
+        // [JsonProperty(nameof(FieldValues))]
+        // public FieldValue[] FieldValues { get; set; } = Array.Empty<FieldValue>();
 
         [JsonProperty(nameof(Id))]
-        public long Id { get; set; }
+        public long Id { get; set; } = 0;
 
         [JsonProperty(nameof(Url))]
-        public Uri Url { get; set; }
+        [JsonConverter<JsonUriStringConverter>]
+        public Uri Url { get; set; } = new Uri("http://example.com");
 
         [JsonProperty(nameof(IsAccountAdministrator))]
-        public bool IsAccountAdministrator { get; set; }
+        public bool IsAccountAdministrator { get; set; } = false;
 
         [JsonProperty(nameof(TermsOfUseAccepted))]
-        public bool TermsOfUseAccepted { get; set; }
+        public bool TermsOfUseAccepted { get; set; } = false;
 
         [JsonProperty(nameof(Fields))]
-        public Fields Fields { get; set; }
+        public Fields Fields { get; set; } = new Fields();
 
         [JsonProperty(nameof(AccessToProfileByOthers))]
-        public bool AccessToProfileByOthers { get; set; }
+        public bool AccessToProfileByOthers { get; set; } = false;
 
         [JsonProperty(nameof(Balance))]
-        public long Balance { get; set; }
+        public long Balance { get; set; } = 0;
 
-        [JsonProperty(nameof(BundleId))]
-        public object BundleId { get; set; }
+        // [JsonProperty(nameof(BundleId))]
+        // public object BundleId { get; set; } = new object();
 
         [JsonProperty(nameof(EmailDisabled))]
-        public bool EmailDisabled { get; set; }
+        public bool EmailDisabled { get; set; } = false;
 
         [JsonProperty(nameof(Groups))]
-        public string[] Groups { get; set; }
+        public string[] Groups { get; set; } = Array.Empty<string>();
 
         [JsonProperty(nameof(IsArchived))]
-        public bool IsArchived { get; set; }
+        public bool IsArchived { get; set; } = false;
 
         [JsonProperty(nameof(IsDonor))]
-        public bool IsDonor { get; set; }
+        public bool IsDonor { get; set; } = false;
 
         [JsonProperty(nameof(IsEventAttendee))]
-        public bool IsEventAttendee { get; set; }
+        public bool IsEventAttendee { get; set; } = false;
 
         [JsonProperty(nameof(IsMember))]
-        public bool IsMember { get; set; }
+        public bool IsMember { get; set; } = false;
 
         [JsonProperty(nameof(MemberId))]
-        public DateTimeOffset MemberId { get; set; }
+        public DateTimeOffset MemberId { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(MemberSince))]
-        public DateTimeOffset MemberSince { get; set; }
+        public DateTimeOffset MemberSince { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(Notes))]
-        public string Notes { get; set; }
+        public string Notes { get; set; } = string.Empty;
 
         [JsonProperty(nameof(Phone))]
-        public Phone Phone { get; set; }
+        public Phone Phone { get; set; } = new Phone();
 
         [JsonProperty(nameof(ReceiveEventReminders))]
-        public bool ReceiveEventReminders { get; set; }
+        public bool ReceiveEventReminders { get; set; } = false;
 
         [JsonProperty(nameof(ReceiveNewsletters))]
-        public DateTimeOffset ReceiveNewsletters { get; set; }
+        public DateTimeOffset ReceiveNewsletters { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(RecievingEMailsDisabled))]
-        public bool RecievingEMailsDisabled { get; set; }
+        public bool RecievingEMailsDisabled { get; set; } = false;
 
         [JsonProperty(nameof(RenewalDue))]
-        public DateTimeOffset RenewalDue { get; set; }
+        public DateTimeOffset RenewalDue { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(HasAcceptedPrivacyPolicy))]
-        public bool HasAcceptedPrivacyPolicy { get; set; }
+        public bool HasAcceptedPrivacyPolicy { get; set; } = false;
 
         [JsonProperty(nameof(DateOfBirth))]
-        public DateTimeOffset DateOfBirth { get; set; }
+        public DateTimeOffset DateOfBirth { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(MarketPosition))]
-        public string[] MarketPosition { get; set; }
+        public string[] MarketPosition { get; set; } = Array.Empty<string>();
 
         [JsonProperty(nameof(HasAcceptedClubRules))]
-        public bool HasAcceptedClubRules { get; set; }
+        public bool HasAcceptedClubRules { get; set; } = false;
+
+        [JsonProperty(nameof(Avatar))]
+        public PhotoUrl Avatar { get; set; } = Constants.Defaults.UnknownAvatarUri;
+
+        public string OutputFilename { get; set; } = Constants.DefaultFilename;
+    }
+
+    [JsonConverter<PhotoUrlJsonConverter>]
+    public class PhotoUrl(string url)
+    {
+        [JsonProperty(nameof(Value))]
+        [JsonConverter<JsonUriStringConverter>]
+        public Uri Value { get; set; } =
+            Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri : new Uri("about:blank");
+
+        public static implicit operator PhotoUrl(Uri url) => new(url.ToString());
+
+        public static implicit operator PhotoUrl(string url) => new(url);
+
+        public static implicit operator string(PhotoUrl url) => url.Value.ToString();
+
+        public override string ToString() => Value.ToString();
+
+        public override bool Equals(object obj) => Value.Equals(obj);
+
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public static bool operator ==(PhotoUrl left, PhotoUrl right) => left.Equals(right);
+
+        public static bool operator !=(PhotoUrl left, PhotoUrl right) => !(left == right);
+
+        public virtual async Task<byte[]> GetBytesAsync(HttpClient httpClient) =>
+            await httpClient.GetByteArrayAsync(Value);
+    }
+
+    public class PhotoUrlJsonConverter : System.Text.Json.Serialization.JsonConverter<PhotoUrl>
+    {
+        public override PhotoUrl Read(ref Utf8JsonReader reader, type typeToConvert, Jso options) =>
+            new(reader.GetString()!);
+
+        public override void Write(Utf8JsonWriter writer, PhotoUrl value, Jso options) =>
+            writer.WriteStringValue(value.Value.ToString());
     }
 
     public partial class FieldValue
     {
         [JsonProperty(nameof(FieldName))]
-        public string FieldName { get; set; }
+        public string FieldName { get; set; } = string.Empty;
 
         [JsonProperty(nameof(Value))]
-        public ValueUnion Value { get; set; }
+        public ValueUnion Value { get; set; } = new ValueUnion();
 
         [JsonProperty(nameof(SystemCode))]
-        public string SystemCode { get; set; }
+        public string SystemCode { get; set; } = string.Empty;
     }
 
     public partial class ValueElement
     {
         [JsonProperty(nameof(Id))]
-        public long Id { get; set; }
+        public long Id { get; set; } = 0;
 
         [JsonProperty(nameof(Label))]
-        public string Label { get; set; }
+        public string Label { get; set; } = string.Empty;
     }
 
     public partial class PurpleValue
     {
         [JsonProperty(nameof(Id))]
-        public long Id { get; set; }
+        public long Id { get; set; } = 0;
 
         [JsonProperty(nameof(Label))]
-        public string Label { get; set; }
+        public string Label { get; set; } = string.Empty;
 
         [JsonProperty(nameof(Value))]
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
 
         [JsonProperty(nameof(SelectedByDefault))]
-        public bool SelectedByDefault { get; set; }
+        public bool SelectedByDefault { get; set; } = false;
 
         [JsonProperty(nameof(Position))]
-        public long Position { get; set; }
+        public long Position { get; set; } = 0;
     }
 
     public partial class Fields
     {
         [JsonProperty(nameof(AccessToProfileByOthers))]
-        public bool AccessToProfileByOthers { get; set; }
+        public bool AccessToProfileByOthers { get; set; } = false;
 
         [JsonProperty(nameof(Balance))]
-        public long Balance { get; set; }
+        public long Balance { get; set; } = 0;
 
-        [JsonProperty(nameof(BundleId))]
-        public object BundleId { get; set; }
+        // [JsonProperty(nameof(BundleId))]
+        // public object BundleId { get; set; } = new object();
 
         [JsonProperty(nameof(EmailDisabled))]
-        public bool EmailDisabled { get; set; }
+        public bool EmailDisabled { get; set; } = false;
 
         [JsonProperty(nameof(Groups))]
-        public string[] Groups { get; set; }
+        public string[] Groups { get; set; } = Array.Empty<string>();
 
         [JsonProperty(nameof(IsArchived))]
-        public bool IsArchived { get; set; }
+        public bool IsArchived { get; set; } = false;
 
         [JsonProperty(nameof(IsDonor))]
-        public bool IsDonor { get; set; }
+        public bool IsDonor { get; set; } = false;
 
         [JsonProperty(nameof(IsEventAttendee))]
-        public bool IsEventAttendee { get; set; }
+        public bool IsEventAttendee { get; set; } = false;
 
         [JsonProperty(nameof(IsMember))]
-        public bool IsMember { get; set; }
+        public bool IsMember { get; set; } = false;
 
         [JsonProperty(nameof(MemberId))]
-        public DateTimeOffset MemberId { get; set; }
+        public DateTimeOffset MemberId { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(MemberSince))]
-        public DateTimeOffset MemberSince { get; set; }
+        public DateTimeOffset MemberSince { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(Notes))]
-        public string Notes { get; set; }
+        public string Notes { get; set; } = string.Empty;
 
         [JsonProperty(nameof(Phone))]
-        public Phone Phone { get; set; }
+        public Phone Phone { get; set; } = new Phone();
 
         [JsonProperty(nameof(ReceiveEventReminders))]
-        public bool ReceiveEventReminders { get; set; }
+        public bool ReceiveEventReminders { get; set; } = false;
 
         [JsonProperty(nameof(ReceiveNewsletters))]
-        public DateTimeOffset ReceiveNewsletters { get; set; }
+        public DateTimeOffset ReceiveNewsletters { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(RecievingEMailsDisabled))]
-        public bool RecievingEMailsDisabled { get; set; }
+        public bool RecievingEMailsDisabled { get; set; } = false;
 
         [JsonProperty(nameof(RenewalDue))]
-        public DateTimeOffset RenewalDue { get; set; }
+        public DateTimeOffset RenewalDue { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(HasAcceptedPrivacyPolicy))]
-        public bool HasAcceptedPrivacyPolicy { get; set; }
+        public bool HasAcceptedPrivacyPolicy { get; set; } = false;
 
         [JsonProperty(nameof(DateOfBirth))]
-        public DateTimeOffset DateOfBirth { get; set; }
+        public DateTimeOffset DateOfBirth { get; set; } = DateTimeOffset.MinValue;
 
         [JsonProperty(nameof(MarketPosition))]
-        public string[] MarketPosition { get; set; }
+        public string[] MarketPosition { get; set; } = Array.Empty<string>();
 
         [JsonProperty(nameof(HasAcceptedClubRules))]
-        public bool HasAcceptedClubRules { get; set; }
+        public bool HasAcceptedClubRules { get; set; } = false;
     }
 
     public partial class Phone
     {
         [JsonProperty("country")]
-        public string Country { get; set; }
+        public string Country { get; set; } = string.Empty;
 
         [JsonProperty("countryCallingCode")]
         [JsonConverter(typeof(ParseStringConverter))]
-        public long CountryCallingCode { get; set; }
+        public long CountryCallingCode { get; set; } = 0;
 
         [JsonProperty("nationalNumber")]
         [JsonConverter(typeof(ParseStringConverter))]
-        public long NationalNumber { get; set; }
+        public long NationalNumber { get; set; } = 0;
 
         [JsonProperty("number")]
-        public string Number { get; set; }
+        public string Number { get; set; } = string.Empty;
+
+        public override string ToString()
+        {
+            return $"+{CountryCallingCode} {NationalNumber}";
+        }
     }
 
     public partial class MembershipLevel
     {
         [JsonProperty(nameof(Id))]
-        public long Id { get; set; }
+        public long Id { get; set; } = 0;
 
         [JsonProperty(nameof(Url))]
-        public Uri Url { get; set; }
+        public Uri Url { get; set; } = new Uri("about:blank");
 
         [JsonProperty(nameof(Name))]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 
     public partial struct ValueUnion
@@ -306,13 +355,13 @@ namespace QuickType
 
     internal class ValueUnionConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) =>
+        public override bool CanConvert(type t) =>
             t == typeof(ValueUnion) || t == typeof(ValueUnion?);
 
-        public override object ReadJson(
+        public override object? ReadJson(
             JsonReader reader,
-            Type t,
-            object existingValue,
+            type t,
+            object? existingValue,
             JsonSerializer serializer
         )
         {
@@ -329,20 +378,20 @@ namespace QuickType
                 case JsonToken.String:
                 case JsonToken.Date:
                     var stringValue = serializer.Deserialize<string>(reader);
-                    return new ValueUnion { String = stringValue };
+                    return new ValueUnion { String = stringValue! };
                 case JsonToken.StartObject:
                     var objectValue = serializer.Deserialize<PurpleValue>(reader);
-                    return new ValueUnion { PurpleValue = objectValue };
+                    return new ValueUnion { PurpleValue = objectValue! };
                 case JsonToken.StartArray:
                     var arrayValue = serializer.Deserialize<ValueElement[]>(reader);
-                    return new ValueUnion { ValueElementArray = arrayValue };
+                    return new ValueUnion { ValueElementArray = arrayValue! };
             }
             throw new TypeInitializationException("Cannot unmarshal type ValueUnion", null);
         }
 
         public override void WriteJson(
             JsonWriter writer,
-            object untypedValue,
+            object? untypedValue,
             JsonSerializer serializer
         )
         {
@@ -385,12 +434,12 @@ namespace QuickType
 
     internal class ParseStringConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(long) || t == typeof(long?);
+        public override bool CanConvert(type t) => t == typeof(long) || t == typeof(long?);
 
-        public override object ReadJson(
+        public override object? ReadJson(
             JsonReader reader,
-            Type t,
-            object existingValue,
+            type t,
+            object? existingValue,
             JsonSerializer serializer
         )
         {
@@ -398,7 +447,7 @@ namespace QuickType
                 return null;
             var value = serializer.Deserialize<string>(reader);
             long l;
-            if (Int64.TryParse(value, out l))
+            if (long.TryParse(value, out l))
             {
                 return l;
             }
@@ -407,7 +456,7 @@ namespace QuickType
 
         public override void WriteJson(
             JsonWriter writer,
-            object untypedValue,
+            object? untypedValue,
             JsonSerializer serializer
         )
         {

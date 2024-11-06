@@ -11,6 +11,7 @@ namespace MOCSocialClubPassWebService.Controllers;
 
 using System;
 using System.Linq;
+using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Models;
 using Options;
@@ -18,74 +19,108 @@ using static System.IO.File;
 
 [ApiController]
 [Route("api/passes")]
-public class MembershipCardController(IOptions<MOCSocialClubPassbookOptions>? settings)
-    : ControllerBase
+public class MembershipCardController(
+    IOptions<MOCSocialClubPassbookOptions>? settings,
+    HttpClient httpClient
+) : ControllerBase
 {
     private readonly MOCSocialClubPassbookOptions _settings =
         settings?.Value ?? throw new ArgumentNullException(nameof(settings));
 
-    [HttpPost("/api/passes/mares/my")]
+    [HttpPost]
     [Produces(Constants.PkPassMimeType)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [Consumes(typeof(MOCMembershipCardRequest), Application.Json.DisplayName)]
+    [ProducesResponseType(typeof(byte[]), StatusCodes.Status200OK, Constants.PkPassMimeType)]
+    [Consumes(typeof(Models.Json.MocMembershipCardRequest), Constants.PkPassRequestMimeType)]
     public async Task<IActionResult> GetMyMareMembershipCard(
-        [FromBody] MOCMembershipCardRequest request
+        Models.Json.MocMembershipCardRequest request
     )
     {
-        PassGeneratorRequest passGeneratorRequest = new PassGeneratorRequest
-        {
-            PassTypeIdentifier = _settings.PassTypeIdentifier,
-            TeamIdentifier = _settings.TeamId,
-            SerialNumber = Counter.Next.ToString(),
-            Description = "MOC Social Club Mare Membership Card",
-            OrganizationName = _settings.OrganizationName,
-            LogoText = _settings.LogoText,
-            BackgroundColor = _settings.BackgroundColor,
-            LabelColor = _settings.LabelColor,
-            ForegroundColor = _settings.ForegroundColor,
-            Style = _settings.PassStyle,
-        };
-
-        passGeneratorRequest.UserInfo[Constants.Fields.FirstName.Key] = "David";
-        passGeneratorRequest.UserInfo[Constants.Fields.LastName.Key] = "Gerard";
-        passGeneratorRequest.UserInfo[Constants.Fields.Name.Key] = "David Gerard";
-        passGeneratorRequest.Images.Add(
-            PassbookImage.Logo,
-            await ReadAllBytesAsync("./images/moc.png")
-        );
-        passGeneratorRequest.Images.Add(
-            PassbookImage.Thumbnail,
-            await ReadAllBytesAsync("./images/thumbnail.png")
+        PassGeneratorRequest passGeneratorRequest = await _settings.ToPassGeneratorRequestAsync();
+        passGeneratorRequest.UserInfo[Constants.Fields.MemberId.Key] = request.MemberId.ToString();
+        passGeneratorRequest.UserInfo[Constants.Fields.FirstName.Key] =
+            request.FirstName ?? "[no first name]";
+        passGeneratorRequest.UserInfo[Constants.Fields.LastName.Key] =
+            request.LastName ?? "[no last name]";
+        passGeneratorRequest.UserInfo[Constants.Fields.Name.Key] =
+            request.DisplayName ?? "[no name]";
+        passGeneratorRequest.UserInfo[Constants.Fields.Email.Key] =
+            request.Email ?? "[no email address]";
+        passGeneratorRequest.UserInfo[Constants.Fields.PhoneNumber.Key] =
+            request.Phone.ToString() ?? "[no phone number]";
+        passGeneratorRequest.SecondaryFields.Add(
+            new StandardField(
+                Constants.Fields.MarketRole.Key,
+                Constants.Fields.MarketRole.Label,
+                request.MarketPosition.Join(", ")
+            )
         );
 
         passGeneratorRequest.PrimaryFields.Add(
             new StandardField(
                 Constants.Fields.Name.Key,
                 Constants.Fields.Name.Label,
-                "David Gerard"
+                passGeneratorRequest.UserInfo[Constants.Fields.Name.Key]?.ToString()!
             )
         );
+
         passGeneratorRequest.SecondaryFields.Add(
             new StandardField(
-                Constants.Fields.MarketRole.Key,
-                Constants.Fields.MarketRole.Label,
-                "\"Mare\""
+                Constants.Fields.MemberId.Key,
+                Constants.Fields.MemberId.Label,
+                request.MemberId.ToString()
             )
         );
 
-        passGeneratorRequest.ExpirationDate = DateTimeOffset.Now.AddYears(1);
-        passGeneratorRequest.SharingProhibited = true;
-        passGeneratorRequest.PassbookCertificate = _settings.SigningCertificate.AsX509Certificate();
-
-        passGeneratorRequest.Images = _settings.Images.ToDictionary(
-            kvp => kvp.Key,
-            kvp => kvp.Value.AsBytesAsync().Result
+        passGeneratorRequest.BackFields.Add(
+            new DateField(
+                Constants.Fields.ExpirationDate.Key,
+                Constants.Fields.ExpirationDate.Label,
+                FieldDateTimeStyle.PKDateStyleShort,
+                FieldDateTimeStyle.PKDateStyleNone,
+                request.RenewalDue.DateTime
+            )
         );
+        passGeneratorRequest.BackFields.Add(
+            new StandardField(
+                Constants.Fields.Email.Key,
+                Constants.Fields.Email.Label,
+                passGeneratorRequest.UserInfo[Constants.Fields.Email.Key]?.ToString()!
+            )
+        );
+        passGeneratorRequest.BackFields.Add(
+            new StandardField(
+                Constants.Fields.FirstName.Key,
+                Constants.Fields.FirstName.Label,
+                passGeneratorRequest.UserInfo[Constants.Fields.FirstName.Key]?.ToString()!
+            )
+        );
+        passGeneratorRequest.BackFields.Add(
+            new StandardField(
+                Constants.Fields.LastName.Key,
+                Constants.Fields.LastName.Label,
+                passGeneratorRequest.UserInfo[Constants.Fields.LastName.Key]?.ToString()!
+            )
+        );
+        passGeneratorRequest.ExpirationDate = request.RenewalDue.DateTime;
+        passGeneratorRequest.SharingProhibited = false;
+        passGeneratorRequest.ExpirationDate = request.RenewalDue;
+        // passGeneratorRequest.SharingProhibited = true;
+        // passGeneratorRequest.PassbookCertificate = _settings.SigningCertificate.AsX509Certificate();
+
+        passGeneratorRequest.Images[PassbookImage.Thumbnail] = await request.Avatar.GetBytesAsync(
+            httpClient
+        );
+        // passGeneratorRequest.Images[PassbookImage.Strip] = await request.
+        foreach (var image in _settings.Images)
+        {
+            passGeneratorRequest.Images[image.Key] = await image.Value.AsBytesAsync();
+        }
         passGeneratorRequest.Style = PassStyle.Generic;
 
         var generator = new PassGenerator();
 
         passGeneratorRequest.AppleWWDRCACertificate = _settings.CaCertificate.AsX509Certificate();
+        passGeneratorRequest.PassbookCertificate = _settings.SigningCertificate.AsX509Certificate();
 
         var pass = generator.Generate(passGeneratorRequest);
         return File(

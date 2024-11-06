@@ -49,10 +49,10 @@ public class FieldsConfigurator(IConfiguration configuration, ILogger<FieldsConf
                 case string s when s.Equals(FieldType.Text):
                     fields.Add(
                         new StandardField(
-                            item[nameof(StandardField.Key)],
-                            item[nameof(StandardField.Label)],
-                            item[nameof(StandardField.Value)],
-                            item[nameof(StandardField.AttributedValue)],
+                            item[nameof(StandardField.Key)] ?? string.Empty,
+                            item[nameof(StandardField.Label)] ?? string.Empty,
+                            item[nameof(StandardField.Value)] ?? string.Empty,
+                            item[nameof(StandardField.AttributedValue)] ?? string.Empty,
                             Enum.TryParse<DataDetectorTypes>(
                                 item[nameof(DataDetectorTypes)],
                                 out var dataDetectorTypes
